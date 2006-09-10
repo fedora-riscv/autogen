@@ -1,7 +1,7 @@
 Summary: Sourcecode autogenerator
 Name: autogen
 Version: 5.8.5
-Release: 6%{?dist}
+Release: 7%{?dist}
 License: GPL
 Group: Development/Tools
 Source: http://kent.dl.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.bz2
@@ -48,15 +48,15 @@ mv %{buildroot}/%{_bindir}/columns %{buildroot}/%{_bindir}/columns.autogen
 mv %{buildroot}/%{_bindir}/getdefs %{buildroot}/%{_bindir}/getdefs.autogen
 mkdir -p %{buildroot}/%{_sysconfdir}/alternatives
 rm -f %{buildroot}/%{_datadir}/autogen/libopts-27.4.2.tar.gz
+rm -f %{buildroot}/%{_libdir}/libopts*
+rm -f %{buildroot}/%{_datadir}/aclocal/liboptschk.m4
 
 %check
 make check
 
 %preun
 if [ $1 = 0 ] ; then
-/sbin/install-info --delete %{_infodir}/%{name}.info %{_infodir}/dir ||:
-/sbin/install-info --delete %{_infodir}/%{name}.info-1 %{_infodir}/dir ||:
-/sbin/install-info --delete %{_infodir}/%{name}.info-2 %{_infodir}/dir ||:
+/sbin/install-info --delete %{_infodir}/%{name}.info %{_infodir}/dir || 
 %{_sbindir}/alternatives --remove columns %{_bindir}/columns.autogen
 %{_sbindir}/alternatives --remove getdefs %{_bindir}/getdefs.autogen
 fi
@@ -77,15 +77,13 @@ fi
 /sbin/ldconfig
 
 %post
-/sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir ||:
-/sbin/install-info %{_infodir}/%{name}.info-1 %{_infodir}/dir ||:
-/sbin/install-info %{_infodir}/%{name}.info-2 %{_infodir}/dir ||:
+/sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
 /sbin/ldconfig
 
 # set up the alteratives
 
-%{_sbindir}/alternatives --install %{_bindir}/columns columns %{_bindir}/columns.autogen
-%{_sbindir}/alternatives --install %{_bindir}/getdefs getdefs %{_bindir}/getdefs.autogen
+%{_sbindir}/alternatives --install %{_bindir}/columns columns %{_bindir}/columns.autogen 90
+%{_sbindir}/alternatives --install %{_bindir}/getdefs getdefs %{_bindir}/getdefs.autogen 90
 
 %triggerpostun -- autogen < 5.8.5
 %{_sbindir}/alternatives --auto columns
@@ -108,21 +106,21 @@ rm -rf %{buildroot}
 %{_infodir}/autogen.info*
 %{_bindir}/xml2ag
 %{_libdir}/libguileopts.so.0*
-%{_libdir}/libopts.so.*
 
 %files devel
 %defattr(-,root,root)
 %{_datadir}/aclocal/autoopts.m4
-%{_datadir}/aclocal/liboptschk.m4
-%{_libdir}/libopts.so
 %{_libdir}/pkgconfig/autoopts.pc
-%{_mandir}/man3/*
+%exclude %{_mandir}/man3/*
 %{_mandir}/man1/autoopts-config*
-%{_includedir}/autoopts/
+%exclude %{_includedir}/autoopts/
 %{_bindir}/autoopts-config
 %{_libdir}/libguileopts.so
 
 %changelog
+* Sun Sep 10 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-7
+- removed libopts and other autoopts conflicts
+
 * Sun Sep 10 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-6
 - added make check step
 - fixed SOURCE0
