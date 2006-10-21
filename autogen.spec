@@ -1,7 +1,7 @@
 Summary: Sourcecode autogenerator
 Name: autogen
-Version: 5.8.5
-Release: 7%{?dist}
+Version: 5.8.7
+Release: 1%{?dist}
 License: GPL
 Group: Development/Tools
 Source: http://kent.dl.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.bz2
@@ -118,6 +118,9 @@ rm -rf %{buildroot}
 %{_libdir}/libguileopts.so
 
 %changelog
+* Fri Oct 21 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-1
+- bump to new version
+
 * Sun Sep 10 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-7
 - removed libopts and other autoopts conflicts
 
