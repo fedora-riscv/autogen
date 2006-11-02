@@ -1,7 +1,7 @@
 Summary: Sourcecode autogenerator
 Name: autogen
 Version: 5.8.7
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL
 Group: Development/Tools
 Source: http://kent.dl.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.bz2
@@ -12,6 +12,9 @@ Requires: ldconfig autoconf
 Requires(postun): %{_sbindir}/alternatives
 Requires(preun): /sbin/install-info %{_sbindir}/alternatives
 Requires(post): /sbin/install-info %{_sbindir}/alternatives
+
+Obsoletes: libopts-devel
+Obsoletes: libopts
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance of 
@@ -32,9 +35,10 @@ Development files for autogen.
 chmod 0644 COPYING
 
 %build
-%configure --disable-autoopts
+%configure
 #find -name Makefile -exec sed -i -e 's/-Werror//' {} \;
-make LIBTOOL=%{_bindir}/libtool
+make LIBTOOL=%{_bindir}/libtool %{?_smp_mflags}
+
 # no smp flags as it falls over during build
 
 %install
@@ -47,9 +51,7 @@ rm -f %{buildroot}/%{_infodir}/dir
 mv %{buildroot}/%{_bindir}/columns %{buildroot}/%{_bindir}/columns.autogen
 mv %{buildroot}/%{_bindir}/getdefs %{buildroot}/%{_bindir}/getdefs.autogen
 mkdir -p %{buildroot}/%{_sysconfdir}/alternatives
-rm -f %{buildroot}/%{_datadir}/autogen/libopts-27.4.2.tar.gz
-rm -f %{buildroot}/%{_libdir}/libopts*
-rm -f %{buildroot}/%{_datadir}/aclocal/liboptschk.m4
+rm -f %{buildroot}/%{_datadir}/autogen/libopts*.tar.gz
 
 %check
 make check
@@ -106,20 +108,25 @@ rm -rf %{buildroot}
 %{_infodir}/autogen.info*
 %{_bindir}/xml2ag
 %{_libdir}/libguileopts.so.0*
+%{_libdir}/libopts.so.*
 
 %files devel
 %defattr(-,root,root)
 %{_datadir}/aclocal/autoopts.m4
+%{_datadir}/aclocal/liboptschk.m4
 %{_libdir}/pkgconfig/autoopts.pc
 %exclude %{_mandir}/man3/*
 %{_mandir}/man1/autoopts-config*
 %exclude %{_includedir}/autoopts/
 %{_bindir}/autoopts-config
 %{_libdir}/libguileopts.so
+%{_libdir}/libopts.so
+%{_includedir}/autoopts
 
 %changelog
-* Wed Oct 25 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-2
-- rebuild
+* Thu Nov 02 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-3
+- obsoletes libopts
+- now links to it's own version of libopts shipped with the tarball
 
 * Fri Oct 21 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-1
 - bump to new version
