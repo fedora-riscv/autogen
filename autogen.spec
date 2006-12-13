@@ -1,13 +1,13 @@
 Summary: Sourcecode autogenerator
 Name: autogen
 Version: 5.8.7
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPL
 Group: Development/Tools
 Source: http://kent.dl.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.bz2
 URL: http://autogen.sourceforge.net/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires: guile-devel libxml2-devel libopts-devel libtool
+BuildRequires: guile-devel libxml2-devel libtool
 Requires: ldconfig autoconf
 Requires(postun): %{_sbindir}/alternatives
 Requires(preun): /sbin/install-info %{_sbindir}/alternatives
@@ -58,7 +58,7 @@ make check
 
 %preun
 if [ $1 = 0 ] ; then
-/sbin/install-info --delete %{_infodir}/%{name}.info %{_infodir}/dir || 
+/sbin/install-info --delete %{_infodir}/%{name}.info %{_infodir}/dir || :
 %{_sbindir}/alternatives --remove columns %{_bindir}/columns.autogen
 %{_sbindir}/alternatives --remove getdefs %{_bindir}/getdefs.autogen
 fi
@@ -124,6 +124,9 @@ rm -rf %{buildroot}
 %{_includedir}/autoopts
 
 %changelog
+* Wed Dec 13 2006 Paul F .Johnson <paul@all-the-johnsons.co.uk> 5.8.7-4
+- fix for preun
+
 * Thu Nov 02 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-3
 - obsoletes libopts
 - now links to it's own version of libopts shipped with the tarball
