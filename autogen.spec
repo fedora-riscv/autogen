@@ -1,7 +1,7 @@
 Summary: Sourcecode autogenerator
 Name: autogen
 Version: 5.8.7
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPL
 Group: Development/Tools
 Source: http://kent.dl.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.bz2
@@ -37,7 +37,7 @@ chmod 0644 COPYING
 %build
 %configure
 #find -name Makefile -exec sed -i -e 's/-Werror//' {} \;
-make LIBTOOL=%{_bindir}/libtool %{?_smp_mflags}
+make LIBTOOL=%{_bindir}/libtool
 
 # no smp flags as it falls over during build
 
@@ -124,6 +124,9 @@ rm -rf %{buildroot}
 %{_includedir}/autoopts
 
 %changelog
+* Sun Dec 17 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-5
+- ditched smp_mflags again
+
 * Wed Dec 13 2006 Paul F .Johnson <paul@all-the-johnsons.co.uk> 5.8.7-4
 - fix for preun
 
