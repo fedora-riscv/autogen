@@ -1,13 +1,13 @@
 Summary: Sourcecode autogenerator
 Name: autogen
 Version: 5.8.7
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPL
 Group: Development/Tools
 Source: http://kent.dl.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.bz2
 URL: http://autogen.sourceforge.net/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires: guile-devel libxml2-devel libopts-devel libtool
+BuildRequires: guile-devel libxml2-devel libtool
 Requires: ldconfig autoconf
 Requires(postun): %{_sbindir}/alternatives
 Requires(preun): /sbin/install-info %{_sbindir}/alternatives
@@ -37,7 +37,7 @@ chmod 0644 COPYING
 %build
 %configure
 #find -name Makefile -exec sed -i -e 's/-Werror//' {} \;
-make LIBTOOL=%{_bindir}/libtool %{?_smp_mflags}
+make LIBTOOL=%{_bindir}/libtool
 
 # no smp flags as it falls over during build
 
@@ -124,6 +124,10 @@ rm -rf %{buildroot}
 %{_includedir}/autoopts
 
 %changelog
+* Sat Dec 23 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-4
+- removed BR libopts-devel
+- removed multi cpu build
+
 * Thu Nov 02 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-3
 - obsoletes libopts
 - now links to it's own version of libopts shipped with the tarball
