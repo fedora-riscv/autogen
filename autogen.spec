@@ -1,7 +1,7 @@
 Summary: Sourcecode autogenerator
 Name: autogen
-Version: 5.8.7
-Release: 4%{?dist}
+Version: 5.8.8
+Release: 1%{?dist}
 License: GPL
 Group: Development/Tools
 Source: http://kent.dl.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.bz2
@@ -38,7 +38,6 @@ chmod 0644 COPYING
 %configure
 #find -name Makefile -exec sed -i -e 's/-Werror//' {} \;
 make LIBTOOL=%{_bindir}/libtool
-
 # no smp flags as it falls over during build
 
 %install
@@ -58,7 +57,7 @@ make check
 
 %preun
 if [ $1 = 0 ] ; then
-/sbin/install-info --delete %{_infodir}/%{name}.info %{_infodir}/dir || 
+/sbin/install-info --delete %{_infodir}/%{name}.info %{_infodir}/dir || :
 %{_sbindir}/alternatives --remove columns %{_bindir}/columns.autogen
 %{_sbindir}/alternatives --remove getdefs %{_bindir}/getdefs.autogen
 fi
@@ -124,9 +123,11 @@ rm -rf %{buildroot}
 %{_includedir}/autoopts
 
 %changelog
-* Sat Dec 23 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-4
-- removed BR libopts-devel
-- removed multi cpu build
+* Sat Dec 23 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.8-1
+- bump
+
+* Wed Dec 13 2006 Paul F .Johnson <paul@all-the-johnsons.co.uk> 5.8.7-4
+- fix for preun
 
 * Thu Nov 02 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-3
 - obsoletes libopts
