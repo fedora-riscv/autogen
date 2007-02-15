@@ -1,10 +1,10 @@
 Summary: Sourcecode autogenerator
 Name: autogen
-Version: 5.8.8
+Version: 5.8.9
 Release: 1%{?dist}
 License: GPL
 Group: Development/Tools
-Source: http://kent.dl.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.bz2
+Source: http://kent.dl.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.gz
 URL: http://autogen.sourceforge.net/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: guile-devel libxml2-devel libtool
@@ -29,6 +29,13 @@ Requires: %{name} = %{version}-%{release} pkgconfig
 
 %description devel
 Development files for autogen.
+
+%package manuals
+Summary: man files for autogen (not devel)
+Group: Documentation
+
+%description manuals
+man files for autogen (not for the devel package)
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -99,15 +106,17 @@ rm -rf %{buildroot}
 %{_bindir}/autogen
 %{_bindir}/columns.autogen
 %{_bindir}/getdefs.autogen
-%{_mandir}/man1/autogen*
-%{_mandir}/man1/columns*
-%{_mandir}/man1/getdefs*
-%{_mandir}/man1/xml2ag*
-%{_datadir}/autogen/
 %{_infodir}/autogen.info*
 %{_bindir}/xml2ag
 %{_libdir}/libguileopts.so.0*
 %{_libdir}/libopts.so.*
+%{_datadir}/autogen/
+
+%files manuals
+%{_mandir}/man1/autogen*
+%{_mandir}/man1/columns*
+%{_mandir}/man1/getdefs*
+%{_mandir}/man1/xml2ag*
 
 %files devel
 %defattr(-,root,root)
@@ -123,6 +132,10 @@ rm -rf %{buildroot}
 %{_includedir}/autoopts
 
 %changelog
+* Thu Feb 15 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.9-1
+- bump
+- split man files into subpackage (conflicts on fc7)
+
 * Sat Dec 23 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.8-1
 - bump
 
