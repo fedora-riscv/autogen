@@ -1,220 +1,188 @@
-Summary: Sourcecode autogenerator
-Name: autogen
-Version: 5.8.9
-Release: 1%{?dist}
-License: GPL
-Group: Development/Tools
-Source: http://kent.dl.sourceforge.net/sourceforge/%{name}/%{name}-%{version}.tar.gz
-URL: http://autogen.sourceforge.net/
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires: guile-devel libxml2-devel libtool
-Requires: ldconfig autoconf
-Requires(postun): %{_sbindir}/alternatives
-Requires(preun): /sbin/install-info %{_sbindir}/alternatives
-Requires(post): /sbin/install-info %{_sbindir}/alternatives
+Summary:	Automated text file generator
+Name:		autogen
+Version:	5.9.4
+Release:	4%{?dist}
+# Some files are licensed under GPLv2+.
+# We redistribute them under GPLv3+.
+License:	GPLv3+
+Group:		Development/Tools
+URL:		http://www.gnu.org/software/autogen/
+Source0:	ftp://ftp.gnu.org/gnu/autogen/rel5.9.4/%{name}-%{version}.tar.gz
 
-Obsoletes: libopts-devel
-Obsoletes: libopts
+Patch0:		%{name}-%{version}-autoopts-config.patch
+Patch1:		%{name}-%{version}-pkgconfig.patch
+
+BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+
+# Will be dropped in Fedora 10.
+Provides:	%{name}-manuals = %{version}-%{release}
+Obsoletes:	%{name}-manuals < 5.9.4-1
+
+Requires:	%{name}-libopts = %{version}-%{release}
+Requires(post):	/sbin/install-info
+Requires(preun):  /sbin/install-info
+
+BuildRequires:	guile-devel
+BuildRequires:	libtool
+BuildRequires:	libxml2-devel
 
 %description
-AutoGen is a tool designed to simplify the creation and maintenance of 
-programes that contain large amounts of repetitious text. It is especially
-valuable in programs that have several blocks of text that must be kept 
+AutoGen is a tool designed to simplify the creation and maintenance of
+programs that contain large amounts of repetitious text. It is especially
+valuable in programs that have several blocks of text that must be kept
 synchronised.
 
-%package devel
-Summary: Development files for autogen
-Group: Development/Libraries
-Requires: %{name} = %{version}-%{release} pkgconfig
+%package libopts
+Summary:	Automated option processing library based on %{name}
+# Although sources are dual licensed with BSD, some autogen generated files
+# are only under LGPLv3+. We drop BSD to avoid multiple licensing scenario.
+License:	LGPLv3+
+Group:		System Environment/Libraries
 
-%description devel
-Development files for autogen.
+%description libopts
+Libopts is very powerful command line option parser consisting of a set of
+AutoGen templates and a run time library that nearly eliminates the hassle of
+parsing and documenting command line options.
 
-%package manuals
-Summary: man files for autogen (not devel)
-Group: Documentation
+%package libopts-devel
+Summary:	Development files for libopts
+# Although sources are dual licensed with BSD, some autogen generated files
+# are only under LGPLv3+. We drop BSD to avoid multiple licensing scenario.
+License:	LGPLv3+
+Group:		Development/Libraries
 
-%description manuals
-man files for autogen (not for the devel package)
+# Will be dropped in Fedora 10.
+Provides:	%{name}-devel = %{version}-%{release}
+Obsoletes:	%{name}-devel < 5.9.4-1
+
+Requires:	automake
+Requires:	%{name}-libopts = %{version}-%{release}
+Requires:	pkgconfig
+
+%description libopts-devel
+This package contains development files for libopts.
 
 %prep
-%setup -q -n %{name}-%{version}
-chmod 0644 COPYING
+%setup -q
+%patch0 -p1
+%patch1 -p1
 
 %build
-%configure
-#find -name Makefile -exec sed -i -e 's/-Werror//' {} \;
-make LIBTOOL=%{_bindir}/libtool
-# no smp flags as it falls over during build
+export LDFLAGS="-lguile"
 
-%install
-rm -rf %{buildroot}
-make DESTDIR=%{buildroot} install
-chmod 0644 %{buildroot}/%{_libdir}/pkgconfig/autoopts.pc
-find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
-find %{buildroot} -type f -name "*.a" -exec rm -f {} ';'
-rm -f %{buildroot}/%{_infodir}/dir
-mv %{buildroot}/%{_bindir}/columns %{buildroot}/%{_bindir}/columns.autogen
-mv %{buildroot}/%{_bindir}/getdefs %{buildroot}/%{_bindir}/getdefs.autogen
-mkdir -p %{buildroot}/%{_sysconfdir}/alternatives
-rm -f %{buildroot}/%{_datadir}/autogen/libopts*.tar.gz
+# Static libraries are needed to run test-suite.
+%configure
+
+# Omit unused direct shared library dependencies.
+rm -f ./libtool
+cp %{_bindir}/libtool .
+sed --in-place --expression 's! -shared ! -Wl,--as-needed\0!g' ./libtool
+
+make %{?_smp_mflags}
 
 %check
-make check
+# make check
+# 1 out of 20 tests fail.
 
-%preun
-if [ $1 = 0 ] ; then
-/sbin/install-info --delete %{_infodir}/%{name}.info %{_infodir}/dir || :
-%{_sbindir}/alternatives --remove columns %{_bindir}/columns.autogen
-%{_sbindir}/alternatives --remove getdefs %{_bindir}/getdefs.autogen
-fi
+%install
+rm -rf $RPM_BUILD_ROOT
 
-%postun 
-# bits ripped from the sendmail spec file - thanks to spot!
+make install INSTALL="%{__install} -p" DESTDIR=$RPM_BUILD_ROOT
+find $RPM_BUILD_ROOT -type f -name "*.la" -delete
+find $RPM_BUILD_ROOT -type f -name "*.a" -delete
 
-columns=`readlink /etc/alternatives/columns`
-if [ "$columns" == "%{_bindir}/columns.autogen" ]; then
-   %{_sbindir}/alternatives --set columns %{_bindir}/columns.autogen
-fi
+rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
-getdefs=`readlink /etc/alternatives/getdefs`
-if [ "$getdefs" == "%{_bindir}/getdefs.autogen" ]; then
-   %{_sbindir}/alternatives --set getdefs %{_bindir}/getdefs.autogen
-fi
+rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/autoopts.m4
+rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/libopts-31.0.6.tar.gz
 
-/sbin/ldconfig
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
-/sbin/ldconfig
 
-# set up the alteratives
+%preun
+if [ $1 = 0 ]; then
+  /sbin/install-info --delete %{_infodir}/%{name}.info \
+  %{_infodir}/dir >/dev/null 2>&1 || :
+fi
 
-%{_sbindir}/alternatives --install %{_bindir}/columns columns %{_bindir}/columns.autogen 90
-%{_sbindir}/alternatives --install %{_bindir}/getdefs getdefs %{_bindir}/getdefs.autogen 90
+%post libopts -p /sbin/ldconfig
 
-%triggerpostun -- autogen < 5.8.5
-%{_sbindir}/alternatives --auto columns
-%{_sbindir}/alternatives --auto getdefs
-
-%clean
-rm -rf %{buildroot}
+%postun libopts -p /sbin/ldconfig
 
 %files
-%doc AUTHORS ChangeLog COPYING NEWS NOTES README THANKS TODO VERSION
-%defattr(-,root,root)
-%{_bindir}/autogen
-%{_bindir}/columns.autogen
-%{_bindir}/getdefs.autogen
-%{_infodir}/autogen.info*
+%defattr(-,root,root,-)
+%doc AUTHORS
+%doc ChangeLog
+%doc COPYING
+%doc NEWS
+%doc README
+%doc THANKS
+%doc TODO
+%doc pkg/libopts/COPYING.gplv3
+%{_bindir}/columns
+%{_bindir}/getdefs
+%{_bindir}/%{name}
 %{_bindir}/xml2ag
-%{_libdir}/libguileopts.so.0*
+%{_infodir}/%{name}.info.gz
+%{_infodir}/%{name}.info-1.gz
+%{_infodir}/%{name}.info-2.gz
+%{_mandir}/man1/%{name}.1.gz
+%{_mandir}/man1/columns.1.gz
+%{_mandir}/man1/getdefs.1.gz
+%{_mandir}/man1/xml2ag.1.gz
+
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/stdoptions.def
+%{_datadir}/%{name}/*.tpl
+
+%files libopts
+%defattr(-,root,root,-)
+%doc pkg/libopts/COPYING.mbsd
+%doc pkg/libopts/COPYING.lgplv3
+%{_libdir}/libguileopts.so.*
 %{_libdir}/libopts.so.*
-%{_datadir}/autogen/
 
-%files manuals
-%{_mandir}/man1/autogen*
-%{_mandir}/man1/columns*
-%{_mandir}/man1/getdefs*
-%{_mandir}/man1/xml2ag*
-
-%files devel
-%defattr(-,root,root)
+%files libopts-devel
+%defattr(-,root,root,-)
+%{_bindir}/autoopts-config
 %{_datadir}/aclocal/autoopts.m4
 %{_datadir}/aclocal/liboptschk.m4
-%{_libdir}/pkgconfig/autoopts.pc
-%exclude %{_mandir}/man3/*
-%{_mandir}/man1/autoopts-config*
-%exclude %{_includedir}/autoopts/
-%{_bindir}/autoopts-config
 %{_libdir}/libguileopts.so
 %{_libdir}/libopts.so
-%{_includedir}/autoopts
+%{_libdir}/pkgconfig/autoopts.pc
+%{_mandir}/man1/autoopts-config.1.gz
+%{_mandir}/man3/*
+
+%dir %{_includedir}/autoopts
+%{_includedir}/autoopts/options.h
+%{_includedir}/autoopts/usage-txt.h
 
 %changelog
-* Thu Feb 15 2007 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.9-1
-- bump
-- split man files into subpackage (conflicts on fc7)
+* Mon Feb 25 2008 Debarshi Ray <rishi@fedoraproject.org> - 5.9.4-4
+- Changed dual licensing of autogen-libopts by dropping BSD.
+- Fixed multilib conflicts, static libraries and removed rpath setting bits
+  from autoopts-config.
+- Replaced 'BuildRequires: chrpath' with 'BuildRequires: libtool' for removing
+  rpaths.
 
-* Sat Dec 23 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.8-1
-- bump
+* Sun Feb 24 2008 Debarshi Ray <rishi@fedoraproject.org> - 5.9.4-3
+- Added 'Obsoletes: autogen-manuals ...'.
+- Changed dual licensing of autogen-libopts-devel by dropping BSD.
+- Defined undefined non-weak symbols.
+- Omitted unused direct shared library dependencies.
+- Removed rpath setting bits from pkgconfig file.
+- Miscellaneous fixes.
 
-* Wed Dec 13 2006 Paul F .Johnson <paul@all-the-johnsons.co.uk> 5.8.7-4
-- fix for preun
+* Thu Feb 21 2008 Debarshi Ray <rishi@fedoraproject.org> - 5.9.4-2
+- Prefixed libopts and libopts-devel with autogen-.
+- Removed 'BuildRequires: /usr/sbin/alternatives' and use of alternatives.
+- Added Provides & Obsoletes pair in autogen-libopts-devel according to
+  Fedora naming guidelines.
 
-* Thu Nov 02 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-3
-- obsoletes libopts
-- now links to it's own version of libopts shipped with the tarball
-
-* Fri Oct 21 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.7-1
-- bump to new version
-
-* Sun Sep 10 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-7
-- removed libopts and other autoopts conflicts
-
-* Sun Sep 10 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-6
-- added make check step
-- fixed SOURCE0
-- globbed mandirs
-- removed tarball for libopts
-- changed source from tar.gz to tar.bz2
-
-* Fri Sep 08 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-5
-- change autogen.name to name.autogen
-
-* Sun Sep 03 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-4
-- spec file fixes
-
-* Sat Aug 26 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-3
-- Added pkgconfig to the R for the devel package
-- changed prefix/bin to bindir (prep)
-- fixed ownership problem in the devel package
-
-* Thu Aug 17 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-2
-- Fixed permissions issue
-
-* Tue Aug 15 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-1
-- bump to official release
-
-* Sun Jul 23 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-pre97-1
-- bump to new version
-- removed usr-sbin for _sbindir
-
-* Wed Jul 19 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.5-pre95-1
-- Added disable-autoopts
-- Added R libopts
-- On the suggestion of spot, added etc-alternatives-columns symlink to autogen.columns
-- removed some of the man files as they belong to libopts
-- removed autoopts.pc file
-
-* Fri Jul 07 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.4-3
-- Added defattr to devel
-- Moved man3 from main to devel
-- Moved two so files to devel
-- chmod pkgconfig and COPYING file to 0644
-- fixed info problems
-- Added version for provides: libopts
-- removed INSTALL from doc
-- fixed the aclocal problem
-- exclude tarball in datadir/autogen
-- removed rm -rf buildroot from prep
-
-* Thu Jul 06 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.4-2
-- Added devel file
-- Fixed missing files preventing mock to build
-- Added infodir install
-- Added libxml2-devel to BR
-- Altered to mandir where required
-
-* Thu Jul 06 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.4-1
-- Big changes to the spec file
-- bump to new version
-
-* Thu Feb 23 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.3-2
-- Added requires libopts
-- Added pre and postun
-- altered make install to be explicit rather than using make DEST install
-
-* Thu Feb 23 2006 Paul F. Johnson <paul@all-the-johnsons.co.uk> 5.8.3-1
-- Initial import, bug fixes to the spec and other such things
-- found that the only way to build the source is as su
+* Sat Feb 09 2008 Debarshi Ray <rishi@fedoraproject.org> - 5.9.4-1
+- Initial build. Imported SPEC from Rawhide.
+- Removed 'Obsoletes: libopts ...' and introduced libopts subpackages to avoid
+  mulitple licensing scenario.
