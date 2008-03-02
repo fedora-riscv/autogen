@@ -73,9 +73,11 @@ export LDFLAGS="-lguile"
 # Static libraries are needed to run test-suite.
 %configure
 
-# Omit unused direct shared library dependencies.
+# Fix Libtool to remove rpaths.
 rm -f ./libtool
 cp %{_bindir}/libtool .
+
+# Omit unused direct shared library dependencies.
 sed --in-place --expression 's! -shared ! -Wl,--as-needed\0!g' ./libtool
 
 make %{?_smp_mflags}
