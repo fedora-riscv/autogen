@@ -1,13 +1,13 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.9.4
-Release:	6%{?dist}
+Release:	7%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
 Group:		Development/Tools
 URL:		http://www.gnu.org/software/autogen/
-Source0:	ftp://ftp.gnu.org/gnu/autogen/rel5.9.4/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.gnu.org/gnu/autogen/rel5.9.4/%{name}-%{version}.tar.bz2
 
 Patch0:		%{name}-%{version}-autoopts-config.patch
 Patch1:		%{name}-%{version}-pkgconfig.patch
@@ -163,6 +163,9 @@ fi
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Mon Aug 10 2009 Ville Skyttä <ville.skytta@iki.fi> - 5.9.4-7
+- Use bzipped upstream tarball.
+
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.9.4-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
