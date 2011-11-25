@@ -1,22 +1,18 @@
 Summary:	Automated text file generator
 Name:		autogen
-Version:	5.9.4
-Release:	8%{?dist}
+Version:	5.12
+Release:	1%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
 Group:		Development/Tools
 URL:		http://www.gnu.org/software/autogen/
-Source0:	ftp://ftp.gnu.org/gnu/autogen/rel5.9.4/%{name}-%{version}.tar.bz2
+Source0:	ftp://ftp.gnu.org/gnu/autogen/rel5.12/%{name}-%{version}.tar.gz
 
 Patch0:		%{name}-%{version}-autoopts-config.patch
 Patch1:		%{name}-%{version}-pkgconfig.patch
 
-BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-
-# Will be dropped in Fedora 10.
-Provides:	%{name}-manuals = %{version}-%{release}
-Obsoletes:	%{name}-manuals < 5.9.4-1
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:	%{name}-libopts = %{version}-%{release}
 Requires(post):	/sbin/install-info
@@ -51,10 +47,6 @@ Summary:	Development files for libopts
 License:	LGPLv3+
 Group:		Development/Libraries
 
-# Will be dropped in Fedora 10.
-Provides:	%{name}-devel = %{version}-%{release}
-Obsoletes:	%{name}-devel < 5.9.4-1
-
 Requires:	automake
 Requires:	%{name}-libopts = %{version}-%{release}
 Requires:	pkgconfig
@@ -64,7 +56,7 @@ This package contains development files for libopts.
 
 %prep
 %setup -q
-%patch0 -p1
+%patch0 -p0
 %patch1 -p1
 
 %build
@@ -80,7 +72,7 @@ cp %{_bindir}/libtool .
 # Omit unused direct shared library dependencies.
 sed --in-place --expression 's! -shared ! -Wl,--as-needed\0!g' ./libtool
 
-make %{?_smp_mflags}
+make #%{?_smp_mflags}
 
 %check
 # make check
@@ -137,24 +129,21 @@ fi
 %{_mandir}/man1/xml2ag.1.gz
 
 %dir %{_datadir}/%{name}
-%{_datadir}/%{name}/stdoptions.def
-%{_datadir}/%{name}/*.tpl
+%{_datadir}/%{name}/*
 
 %files libopts
 %defattr(-,root,root,-)
 %doc pkg/libopts/COPYING.mbsd
 %doc pkg/libopts/COPYING.lgplv3
-%{_libdir}/libguileopts.so.*
 %{_libdir}/libopts.so.*
 
 %files libopts-devel
 %defattr(-,root,root,-)
 %{_bindir}/autoopts-config
 %{_datadir}/aclocal/autoopts.m4
-%{_datadir}/aclocal/liboptschk.m4
-%{_libdir}/libguileopts.so
+#%{_datadir}/aclocal/liboptschk.m4
 %{_libdir}/libopts.so
-%{_libdir}/pkgconfig/autoopts.pc
+%{_datadir}/pkgconfig/autoopts.pc
 %{_mandir}/man1/autoopts-config.1.gz
 %{_mandir}/man3/*
 
@@ -163,6 +152,9 @@ fi
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Fri Nov 25 2011 Anthony Green <green@redhat.com> - 5.12-1
+- Upgrade.
+
 * Mon Feb 07 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.9.4-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 

@@ -1,6 +1,5 @@
-diff -urNp autogen-5.9.4.orig/autoopts/autoopts-config.in autogen-5.9.4/autoopts/autoopts-config.in
---- autogen-5.9.4.orig/autoopts/autoopts-config.in	2007-12-24 02:33:16.000000000 +0530
-+++ autogen-5.9.4/autoopts/autoopts-config.in	2008-02-25 00:38:27.000000000 +0530
+--- autoopts/autoopts-config.in.orig	2011-06-26 10:39:46.000000000 -0400
++++ autoopts/autoopts-config.in	2011-11-25 11:03:15.408677185 -0500
 @@ -17,17 +17,17 @@
    includedir="@includedir@"
   exec_prefix="@exec_prefix@"
@@ -21,5 +20,5 @@ diff -urNp autogen-5.9.4.orig/autoopts/autoopts-config.in autogen-5.9.4/autoopts
 - static_libs="${libdir}/libopts.a"
 + static_libs=""
        cflags="-I${includedir}"
- test -n "${ldopts}" && ldflags="${ldopts}${libdir} ${ldflags}"
- test "${includedir}" = "/usr/include" && cflags=""
+ case "${libdir}" in
+ /lib | /lib64 | /usr/lib | /usr/lib64 )
