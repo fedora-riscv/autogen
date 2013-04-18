@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.12
-Release:	4%{?dist}
+Release:	5%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -60,7 +60,7 @@ This package contains development files for libopts.
 %patch1 -p1
 
 %build
-export LDFLAGS="-lguile"
+export LDFLAGS="-lguile-2.0"
 
 # Static libraries are needed to run test-suite.
 %configure
@@ -152,6 +152,9 @@ fi
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Thu Apr 18 2013 Debarshi Ray <rishi@fedoraproject.org> - 5.12-5
+- Fix build failure with guile2.
+
 * Wed Feb 13 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.12-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
