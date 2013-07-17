@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.12
-Release:	5%{?dist}
+Release:	6%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -152,6 +152,9 @@ fi
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Wed Jul 17 2013 Petr Pisar <ppisar@redhat.com> - 5.12-6
+- Perl 5.18 rebuild
+
 * Thu Apr 18 2013 Debarshi Ray <rishi@fedoraproject.org> - 5.12-5
 - Fix build failure with guile2.
 
