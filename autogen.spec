@@ -12,7 +12,7 @@ Source0:	ftp://ftp.gnu.org/gnu/autogen/rel5.12/%{name}-%{version}.tar.gz
 Patch0:		%{name}-%{version}-autoopts-config.patch
 Patch1:		%{name}-%{version}-pkgconfig.patch
 
-Requires:	%{name}-libopts = %{version}-%{release}
+Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 Requires(post):	/sbin/install-info
 Requires(preun):  /sbin/install-info
 
@@ -46,7 +46,7 @@ License:	LGPLv3+
 Group:		Development/Libraries
 
 Requires:	automake
-Requires:	%{name}-libopts = %{version}-%{release}
+Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 Requires:	pkgconfig
 
 %description libopts-devel
