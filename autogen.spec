@@ -12,8 +12,6 @@ Source0:	ftp://ftp.gnu.org/gnu/autogen/rel5.12/%{name}-%{version}.tar.gz
 Patch0:		%{name}-%{version}-autoopts-config.patch
 Patch1:		%{name}-%{version}-pkgconfig.patch
 
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
 Requires:	%{name}-libopts = %{version}-%{release}
 Requires(post):	/sbin/install-info
 Requires(preun):  /sbin/install-info
@@ -79,8 +77,6 @@ make #%{?_smp_mflags}
 # 1 out of 20 tests fail.
 
 %install
-rm -rf $RPM_BUILD_ROOT
-
 make install INSTALL="%{__install} -p" DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -type f -name "*.la" -delete
 find $RPM_BUILD_ROOT -type f -name "*.a" -delete
@@ -89,9 +85,6 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/autoopts.m4
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/libopts-31.0.6.tar.gz
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
@@ -107,7 +100,6 @@ fi
 %postun libopts -p /sbin/ldconfig
 
 %files
-%defattr(-,root,root,-)
 %doc AUTHORS
 %doc ChangeLog
 %doc COPYING
@@ -132,13 +124,11 @@ fi
 %{_datadir}/%{name}/*
 
 %files libopts
-%defattr(-,root,root,-)
 %doc pkg/libopts/COPYING.mbsd
 %doc pkg/libopts/COPYING.lgplv3
 %{_libdir}/libopts.so.*
 
 %files libopts-devel
-%defattr(-,root,root,-)
 %{_bindir}/autoopts-config
 %{_datadir}/aclocal/autoopts.m4
 #%{_datadir}/aclocal/liboptschk.m4
