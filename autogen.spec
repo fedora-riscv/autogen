@@ -9,6 +9,9 @@ Group:		Development/Tools
 URL:		http://www.gnu.org/software/autogen/
 Source0:	ftp://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.xz
 
+# Fix multilib conflicts
+Patch0:		autogen-multilib.patch
+
 Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 Requires(post):	/sbin/install-info
 Requires(preun):  /sbin/install-info
@@ -51,6 +54,7 @@ This package contains development files for libopts.
 
 %prep
 %setup -q
+%patch0 -p1 -b .multilib
 
 # Disable failing test
 sed -i 's|errors.test||' autoopts/test/Makefile.in
@@ -75,6 +79,10 @@ make check
 make install INSTALL="%{__install} -p" DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT -type f -name "*.la" -delete
 find $RPM_BUILD_ROOT -type f -name "*.a" -delete
+
+# Remove time stamps from generated devel man pages to avoid multilib conflicts
+sed -i 's|\(It has been AutoGen-ed\).*.\(by AutoGen\)|\1 \2|' \
+	$RPM_BUILD_ROOT%{_mandir}/man3/*.3
 
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
