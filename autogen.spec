@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.18
-Release:	7%{?dist}
+Release:	1%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -143,6 +143,12 @@ fi
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Thu Aug 08 2013 Miroslav Lichvar <mlichvar@redhat.com> - 5.18-1
+- Update to 5.18
+- Fix multilib conflicts (#831379)
+- Make some dependencies arch-specific
+- Remove obsolete macros
+
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.12-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
