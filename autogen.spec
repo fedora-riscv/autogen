@@ -1,6 +1,6 @@
 Summary:	Automated text file generator
 Name:		autogen
-Version:	5.18
+Version:	5.18.1
 Release:	1%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
