@@ -45,6 +45,7 @@ Summary:	Development files for libopts
 License:	LGPLv3+
 Group:		Development/Libraries
 
+Requires:	autogen
 Requires:	automake
 Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 Requires:	pkgconfig
@@ -85,9 +86,6 @@ sed -i 's|\(It has been AutoGen-ed\).*.\(by AutoGen\)|\1 \2|' \
 	$RPM_BUILD_ROOT%{_mandir}/man3/*.3
 
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
-
-rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/autoopts.m4
-rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/libopts-*.tar.gz
 
 %post
 /sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
