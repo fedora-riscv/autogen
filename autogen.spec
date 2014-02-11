@@ -45,8 +45,8 @@ Summary:	Development files for libopts
 License:	LGPLv3+
 Group:		Development/Libraries
 
-Requires:	autogen
 Requires:	automake
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 Requires:	pkgconfig
 
