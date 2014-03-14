@@ -46,7 +46,7 @@ License:	LGPLv3+
 Group:		Development/Libraries
 
 Requires:	automake
-Requires:	%{name}%{?_isa} = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 Requires:	pkgconfig
 
