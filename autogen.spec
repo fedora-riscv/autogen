@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.18.3
-Release:	2%{?dist}
+Release:	1%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -145,6 +145,11 @@ fi
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Tue May 27 2014 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.3-1
+- Update to 5.18.3
+- Compile with -Wno-format-contains-nul
+- Use fully versioned dependency on base package
+
 * Tue Jan 28 2014 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.2-2
 - Package libopts tear-off tarball (#441231)
 
