@@ -62,6 +62,7 @@ sed -i 's|errors.test||' autoopts/test/Makefile.in
 
 %build
 # Static libraries are needed to run test-suite.
+export CFLAGS="$RPM_OPT_FLAGS -Wno-format-contains-nul"
 %configure
 
 # Fix Libtool to remove rpaths.
