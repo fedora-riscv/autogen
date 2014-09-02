@@ -1,6 +1,6 @@
 Summary:	Automated text file generator
 Name:		autogen
-Version:	5.18.3
+Version:	5.18.4
 Release:	3%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
@@ -11,8 +11,6 @@ Source0:	ftp://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.xz
 
 # Fix multilib conflicts
 Patch0:		autogen-multilib.patch
-# Fix mk-tpl-config.sh to not fail when guile headers don't use noreturn
-Patch1:		autogen-mktplconfig.patch
 
 Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 Requires(post):	/sbin/install-info
@@ -58,7 +56,6 @@ This package contains development files for libopts.
 %prep
 %setup -q
 %patch0 -p1 -b .multilib
-%patch1 -p1 -b .mktplconfig
 
 # Disable failing test
 sed -i 's|errors.test||' autoopts/test/Makefile.in
