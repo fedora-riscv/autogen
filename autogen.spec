@@ -1,6 +1,6 @@
 Summary:	Automated text file generator
 Name:		autogen
-Version:	5.18.4
+Version:	5.18.5
 Release:	1%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
@@ -119,21 +119,22 @@ fi
 %{_mandir}/man1/columns.1.gz
 %{_mandir}/man1/getdefs.1.gz
 %{_mandir}/man1/xml2ag.1.gz
-
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*
+%dir %{_libdir}/%{name}
+%{_libdir}/%{name}/*
 
 %files libopts
 %doc pkg/libopts/COPYING.mbsd
 %doc pkg/libopts/COPYING.lgplv3
-%{_libdir}/libopts.so.*
+%{_libdir}/libopts.so.25*
 
 %files libopts-devel
 %{_bindir}/autoopts-config
 %{_datadir}/aclocal/autoopts.m4
 #%{_datadir}/aclocal/liboptschk.m4
 %{_libdir}/libopts.so
-%{_datadir}/pkgconfig/autoopts.pc
+%{_libdir}/pkgconfig/autoopts.pc
 %{_mandir}/man1/autoopts-config.1.gz
 %{_mandir}/man3/*
 
