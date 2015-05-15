@@ -143,6 +143,9 @@ fi
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Fri May 15 2015 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.5-1
+- Update to 5.18.5
+
 * Tue Sep 02 2014 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.4-1
 - Update to 5.18.4
 
