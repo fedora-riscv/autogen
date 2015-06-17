@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.18.5
-Release:	1%{?dist}
+Release:	2%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -143,6 +143,9 @@ fi
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.18.5-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Fri May 15 2015 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.5-1
 - Update to 5.18.5
 
