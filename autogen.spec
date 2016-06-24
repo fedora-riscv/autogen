@@ -19,6 +19,7 @@ Requires(preun):  /sbin/install-info
 BuildRequires:	guile-devel
 BuildRequires:	libtool
 BuildRequires:	libxml2-devel
+BuildRequires:	perl-generators
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance of
