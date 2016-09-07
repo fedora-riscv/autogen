@@ -144,6 +144,10 @@ fi
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Wed Sep 07 2016 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.12-1
+- Update to 5.18.12
+- Add mandatory Perl build-requires
+
 * Fri May 27 2016 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.10-1
 - Update to 5.18.10
 
