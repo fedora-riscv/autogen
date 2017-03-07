@@ -11,6 +11,8 @@ Source0:	ftp://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.xz
 
 # Fix multilib conflicts
 Patch0:		autogen-multilib.patch
+# Include verify.h in libopts tear-off tarball
+Patch1:		autogen-verifyh.patch
 
 Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 Requires(post):	/sbin/install-info
@@ -57,6 +59,7 @@ This package contains development files for libopts.
 %prep
 %setup -q
 %patch0 -p1 -b .multilib
+%patch1 -p1 -b .verifyh
 
 # Disable failing test
 sed -i 's|errors.test||' autoopts/test/Makefile.in
