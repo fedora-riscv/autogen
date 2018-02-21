@@ -71,8 +71,8 @@ export CFLAGS="$RPM_OPT_FLAGS -Wno-format-contains-nul"
 %configure
 
 # Fix Libtool to remove rpaths.
-rm -f ./libtool
-cp %{_bindir}/libtool .
+sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
+sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
 # Omit unused direct shared library dependencies.
 sed --in-place --expression 's! -shared ! -Wl,--as-needed\0!g' ./libtool
