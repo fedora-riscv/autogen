@@ -23,6 +23,7 @@ BuildRequires:	guile-devel
 BuildRequires:	libtool
 BuildRequires:	libxml2-devel
 BuildRequires:	perl-generators
+BuildRequires:	chrpath
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance of
@@ -70,10 +71,6 @@ sed -i 's|errors.test||' autoopts/test/Makefile.in
 export CFLAGS="$RPM_OPT_FLAGS -Wno-format-contains-nul"
 %configure
 
-# Fix Libtool to remove rpaths.
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-
 # Omit unused direct shared library dependencies.
 sed --in-place --expression 's! -shared ! -Wl,--as-needed\0!g' ./libtool
 
@@ -90,6 +87,10 @@ find $RPM_BUILD_ROOT -type f -name "*.a" -delete
 # Remove time stamps from generated devel man pages to avoid multilib conflicts
 sed -i 's|\(It has been AutoGen-ed\).*.\(by AutoGen\)|\1 \2|' \
 	$RPM_BUILD_ROOT%{_mandir}/man3/*.3
+
+# Remove rpath.
+chrpath --delete $RPM_BUILD_ROOT%{_bindir}/{columns,getdefs,%{name},xml2ag}
+chrpath --delete $RPM_BUILD_ROOT%{_libdir}/lib*.so.*
 
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
