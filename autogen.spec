@@ -135,7 +135,6 @@ fi
 %files libopts-devel
 %{_bindir}/autoopts-config
 %{_datadir}/aclocal/autoopts.m4
-#%{_datadir}/aclocal/liboptschk.m4
 %{_libdir}/libopts.so
 %{_libdir}/pkgconfig/autoopts.pc
 %{_mandir}/man1/autoopts-config.1.gz
