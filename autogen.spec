@@ -18,6 +18,7 @@ Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 Requires(post):	/sbin/install-info
 Requires(preun):  /sbin/install-info
 
+BuildRequires:	gcc
 BuildRequires:	guile-devel
 BuildRequires:	libtool
 BuildRequires:	libxml2-devel
