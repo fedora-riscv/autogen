@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.18.12
-Release:	6%{?dist}
+Release:	7%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -145,6 +145,12 @@ fi
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Wed Feb 21 2018 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.12-7
+- fix linking to use hardening flags (#1547522)
+- use macro for ldconfig scriptlets
+- add gcc to build requirements
+- remove comment with macro
+
 * Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 5.18.12-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
