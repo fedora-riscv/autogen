@@ -101,9 +101,7 @@ if [ $1 = 0 ]; then
   %{_infodir}/dir >/dev/null 2>&1 || :
 fi
 
-%post libopts -p /sbin/ldconfig
-
-%postun libopts -p /sbin/ldconfig
+%ldconfig_scriptlets libopts
 
 %files
 %doc AUTHORS
