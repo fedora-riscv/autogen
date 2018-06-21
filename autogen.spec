@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.18.12
-Release:	7%{?dist}
+Release:	8%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -135,6 +135,9 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Thu Jun 21 2018 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.12-8
+- drop obsolete install-info scriptlets
+
 * Wed Feb 21 2018 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.12-7
 - fix linking to use hardening flags (#1547522)
 - use macro for ldconfig scriptlets
