@@ -15,8 +15,6 @@ Patch0:		autogen-multilib.patch
 Patch1:		autogen-verifyh.patch
 
 Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
-Requires(post):	/sbin/install-info
-Requires(preun):  /sbin/install-info
 
 BuildRequires:	gcc
 BuildRequires:	guile-devel
@@ -93,15 +91,6 @@ chrpath --delete $RPM_BUILD_ROOT%{_bindir}/{columns,getdefs,%{name},xml2ag}
 chrpath --delete $RPM_BUILD_ROOT%{_libdir}/lib*.so.*
 
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
-
-%post
-/sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
-
-%preun
-if [ $1 = 0 ]; then
-  /sbin/install-info --delete %{_infodir}/%{name}.info \
-  %{_infodir}/dir >/dev/null 2>&1 || :
-fi
 
 %ldconfig_scriptlets libopts
 
