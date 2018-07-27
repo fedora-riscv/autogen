@@ -1,6 +1,6 @@
 Summary:	Automated text file generator
 Name:		autogen
-Version:	5.18.12
+Version:	5.18.14
 Release:	9%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
@@ -11,8 +11,6 @@ Source0:	ftp://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.xz
 
 # Fix multilib conflicts
 Patch0:		autogen-multilib.patch
-# Include verify.h in libopts tear-off tarball
-Patch1:		autogen-verifyh.patch
 
 Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 
@@ -59,14 +57,13 @@ This package contains development files for libopts.
 %prep
 %setup -q
 %patch0 -p1 -b .multilib
-%patch1 -p1 -b .verifyh
 
 # Disable failing test
 sed -i 's|errors.test||' autoopts/test/Makefile.in
 
 %build
 # Static libraries are needed to run test-suite.
-export CFLAGS="$RPM_OPT_FLAGS -Wno-format-contains-nul"
+export CFLAGS="$RPM_OPT_FLAGS -Wno-implicit-fallthrough -Wno-format-overflow"
 %configure
 
 # Omit unused direct shared library dependencies.
