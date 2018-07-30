@@ -133,7 +133,7 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
-* Fri Jul 27 2018 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.14-1
+* Mon Jul 30 2018 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.14-1
 - update to 5.18.14
 
 * Thu Jul 12 2018 Fedora Release Engineering <releng@fedoraproject.org> - 5.18.12-9
