@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.18.14
-Release:	1%{?dist}
+Release:	2%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -133,6 +133,9 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Tue Jul 31 2018 Florian Weimer <fweimer@redhat.com> - 5.18.14-2
+- Rebuild with fixed binutils
+
 * Mon Jul 30 2018 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.14-1
 - update to 5.18.14
 
