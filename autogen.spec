@@ -5,7 +5,6 @@ Release:	2%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
-Group:		Development/Tools
 URL:		http://www.gnu.org/software/autogen/
 Source0:	ftp://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.xz
 
@@ -32,7 +31,6 @@ Summary:	Automated option processing library based on %{name}
 # Although sources are dual licensed with BSD, some autogen generated files
 # are only under LGPLv3+. We drop BSD to avoid multiple licensing scenario.
 License:	LGPLv3+
-Group:		System Environment/Libraries
 
 %description libopts
 Libopts is very powerful command line option parser consisting of a set of
@@ -44,7 +42,6 @@ Summary:	Development files for libopts
 # Although sources are dual licensed with BSD, some autogen generated files
 # are only under LGPLv3+. We drop BSD to avoid multiple licensing scenario.
 License:	LGPLv3+
-Group:		Development/Libraries
 
 Requires:	automake
 Requires:	%{name} = %{version}-%{release}
