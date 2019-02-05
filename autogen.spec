@@ -10,6 +10,8 @@ Source0:	ftp://ftp.gnu.org/gnu/autogen/rel%{version}/%{name}-%{version}.tar.xz
 
 # Fix multilib conflicts
 Patch0:		autogen-multilib.patch
+# Fix gcc error on overlapping strings
+Patch1:		autogen-overlap.patch
 
 Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 
@@ -54,6 +56,7 @@ This package contains development files for libopts.
 %prep
 %setup -q
 %patch0 -p1 -b .multilib
+%patch1 -p1 -b .overlap
 
 # Disable failing test
 sed -i 's|errors.test||' autoopts/test/Makefile.in
