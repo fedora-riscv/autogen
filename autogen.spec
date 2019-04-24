@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.18.16
-Release:	1%{?dist}
+Release:	2%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -133,6 +133,9 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Wed Apr 24 2019 Björn Esser <besser82@fedoraproject.org> - 5.18.16-2
+- Remove hardcoded gzip suffix from GNU info pages
+
 * Tue Feb 05 2019 Miroslav Lichvar <mlichvar@redhat.com> - 5.18.16-1
 - update to 5.18.16
 - fix building with new gcc
