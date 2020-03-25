@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.18.16
-Release:	4%{?dist}
+Release:	5%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -19,8 +19,19 @@ BuildRequires:	gcc
 BuildRequires:	guile-devel
 BuildRequires:	libtool
 BuildRequires:	libxml2-devel
+BuildRequires:	make
 BuildRequires:	perl-generators
+BuildRequires:	perl(Carp)
+BuildRequires:	perl(constant)
+BuildRequires:	perl(Exporter)
+BuildRequires:	perl(File::Basename)
+BuildRequires:	perl(lib)
+BuildRequires:	perl(List::Util)
+BuildRequires:	perl(strict)
+BuildRequires:	perl(Text::ParseWords)
+BuildRequires:	perl(warnings)
 BuildRequires:	chrpath
+BuildRequires:	sed
 
 %description
 AutoGen is a tool designed to simplify the creation and maintenance of
@@ -133,6 +144,9 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Wed Mar 25 2020 Jitka Plesnikova <jplesnik@redhat.com> - 5.18.16-5
+- Add perl dependencies needed for build
+
 * Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.18.16-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
