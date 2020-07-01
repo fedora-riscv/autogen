@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.18.16
-Release:	5%{?dist}
+Release:	6%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -16,7 +16,7 @@ Patch1:		autogen-overlap.patch
 Requires:	%{name}-libopts%{?_isa} = %{version}-%{release}
 
 BuildRequires:	gcc
-BuildRequires:	guile-devel
+BuildRequires:	guile22-devel
 BuildRequires:	libtool
 BuildRequires:	libxml2-devel
 BuildRequires:	make
@@ -144,6 +144,9 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Wed Jul 01 2020 Tomas Korbar <tkorbar@redhat.com> - 5.18.16-6
+- Rebuild with guile-2.2
+
 * Wed Mar 25 2020 Jitka Plesnikova <jplesnik@redhat.com> - 5.18.16-5
 - Add perl dependencies needed for build
 
