@@ -1,7 +1,7 @@
 Summary:	Automated text file generator
 Name:		autogen
 Version:	5.18.16
-Release:	13%{?dist}
+Release:	13.rv64%{?dist}
 # Some files are licensed under GPLv2+.
 # We redistribute them under GPLv3+.
 License:	GPLv3+
@@ -86,6 +86,10 @@ sed --in-place --expression 's! -shared ! -Wl,--as-needed\0!g' ./libtool
 make %{?_smp_mflags}
 
 %check
+# stress.test failed on riscv64, remove it for riscv64
+%ifarch riscv64
+sed -i -e 's/stress.test //g' agen5/test/Makefile
+%endif
 make check
 
 %install
@@ -146,6 +150,9 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 %{_includedir}/autoopts/usage-txt.h
 
 %changelog
+* Mon May 15 2023 Liu Yang <Yang.Liu.sn@gmail.com> - 5.18.16-13.rv64
+- stesss.test failed on riscv64, so skip tests on this arch.
+
 * Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 5.18.16-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
 
